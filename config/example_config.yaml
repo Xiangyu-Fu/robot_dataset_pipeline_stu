@@ -1,0 +1,87 @@
+# Example Configuration for Robot Dataset Pipeline
+# Copyright (c) 2025 Xiangyu Fu, Institute of Cognitive Systems, TUM
+# Licensed under the MIT License
+
+# This is an example configuration file. Copy this to config.yaml and
+# modify the paths and settings according to your specific setup.
+
+verbose: false
+
+# Hugging Face configuration
+push_to_hub: false  # Set to true when you want to upload to Hugging Face Hub
+private: true
+
+# File paths - MODIFY THESE PATHS FOR YOUR SETUP
+rosbag_folder: "/path/to/your/rosbag/folder"  # Directory containing ROS bag files
+parquet_folder: "/path/to/your/parquet_shards"  # Directory to save intermediate Parquet files
+hf_output_dir: "/path/to/your/hf_datasets"  # Directory for Hugging Face dataset output
+repo_id: "your_username/your_dataset_name"  # Hugging Face repository ID (format: username/dataset_name)
+
+# ROS topics to extract from the bag files
+# MODIFY THESE TOPICS BASED ON YOUR ROBOT'S SENSORS
+topics:
+  - "/tf"  # Transform data (required for pose information)
+  - "/camera/color/image_raw"  # RGB camera images
+  - "/camera/depth/image_rect_raw"  # Depth camera images
+  - "/camera/aligned_depth_to_color/image_raw"  # Aligned depth images
+  - "/camera/depth/color/points"  # Point cloud data
+  - "/camera/color/camera_info"  # Camera calibration info
+  - "/camera/depth/camera_info"  # Depth camera calibration
+
+# Data modalities expected in the dataset
+# MODIFY BASED ON YOUR ROBOT'S CAPABILITIES
+modalities:  
+  - "obs_pose"      # Observed robot poses
+  - "obs_point_cloud"  # Point cloud observations
+  - "obs_image"     # RGB image observations
+  - "obs_depth"     # Depth image observations
+  - "act_pose"      # Action poses (robot commands)
+
+# Data processing parameters
+fps: 10                # Sampling frequency (Hz) - reduce for faster processing
+curtail_time: [0, 1]   # [start, end] time to curtail each bag in seconds (for debugging)
+batch_size: 5          # Number of ROS bags per Parquet shard
+compression: "zstd"    # Compression codec: "zstd", "lz4", "snappy", or null
+use_streaming: false   # Enable for very large datasets
+n_next_obs: 2         # Number of next observations for action computation
+
+# Point cloud processing
+num_points: 88  # Maximum number of points per point cloud (adjust based on your sensor)
+
+# Dataset splits (percentages)
+splits:
+  train: "0:80"        # 80% for training
+  validation: "80:90"  # 10% for validation  
+  test: "90:100"       # 10% for testing
+
+# Processing options
+read_from_rosbag: true  # Set to false to skip ROS bag reading and use existing Parquet files
+
+# Relative coordinate configuration (useful for diffusion policy)
+use_relative_coordinates: true  # Enable relative coordinates
+relative_mode: "sequential"     # Options: "initial", "sequential", "between_hands"
+
+# Example topics for different robot types:
+# 
+# For manipulation robots:
+# topics:
+#   - "/tf"
+#   - "/joint_states" 
+#   - "/camera/color/image_raw"
+#   - "/gripper/command"
+#
+# For mobile robots:
+# topics:
+#   - "/tf"
+#   - "/cmd_vel"
+#   - "/scan"
+#   - "/odom"
+#   - "/camera/image_raw"
+#
+# For humanoid robots:
+# topics:
+#   - "/tf"
+#   - "/joint_states"
+#   - "/left_arm/command"
+#   - "/right_arm/command"
+#   - "/head/camera/image_raw"
