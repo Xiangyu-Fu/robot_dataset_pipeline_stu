@@ -40,7 +40,6 @@ modalities:
 # Data processing parameters
 fps: 10                # Sampling frequency (Hz) - reduce for faster processing
 curtail_time: [0, 1]   # [start, end] time to curtail each bag in seconds (for debugging)
-batch_size: 5          # Number of ROS bags per Parquet shard
 compression: "zstd"    # Compression codec: "zstd", "lz4", "snappy", or null
 use_streaming: false   # Enable for very large datasets
 n_next_obs: 2         # Number of next observations for action computation

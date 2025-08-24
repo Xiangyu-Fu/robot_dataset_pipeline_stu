@@ -160,7 +160,6 @@ modalities:
 - Update your `topics` list in the configuration
 
 ### Issue: "Memory error"
-- Reduce `batch_size` in configuration
 - Use `compression: "zstd"` for better compression
 - Process fewer bags at once
 

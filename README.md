@@ -227,7 +227,6 @@ The pipeline is configured via a YAML file (`config/config.yaml`). Here are the 
 verbose: false                    # Enable detailed logging
 read_from_rosbag: true           # Process ROS bags (false = use existing Parquet)
 fps: 10                          # Sampling frequency (Hz)
-batch_size: 5                    # Number of episodes per Parquet shard
 compression: "zstd"              # Compression codec ("zstd", "lz4", "snappy")
 ```
 

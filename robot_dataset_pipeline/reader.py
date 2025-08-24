@@ -284,21 +284,3 @@ class RosbagReader:
             logger.info(f"Applied relative coordinates with mode: {self.cfg.relative_mode}")
         
         return obs_result
-
-    def read_all(self) -> Iterator[Dict[str, Any]]:
-        """
-        Iterate over all .bag files in rosbag_folder, yielding one trajectory each.
-        
-        This method provides a generator that processes all ROS bag files in the
-        configured directory. It handles errors gracefully, logging failures but
-        continuing with the next file.
-        
-        Yields:
-            Dict: Processed trajectory data for each successfully read bag file
-        """
-        bag_paths = sorted(self.cfg.rosbag_folder.glob("*.bag"))
-        for bag_path in bag_paths:
-            try:
-                yield self.read_one(bag_path)  # Generator for trajectories
-            except Exception as e:
-                logger.error("Failed to process %s: %s", bag_path, e, exc_info=True)

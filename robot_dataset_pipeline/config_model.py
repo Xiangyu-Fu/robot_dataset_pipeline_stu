@@ -52,7 +52,6 @@ class PipelineConfig(BaseModel):
         description="List of modalities in dataset (e.g., 'obs_pose', 'obs_image', 'act_pose')",
     )
     fps: int = Field(..., gt=0, description="Frames per second for data sampling, must be positive")
-    batch_size: int = Field(5, gt=0, description="Number of ROS bags per Parquet shard")
     compression: Optional[str] = Field(
         None, description="Parquet compression codec (e.g. 'lz4', 'zstd', 'snappy')"
     )
