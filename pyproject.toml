@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robot_dataset_pipeline"
+version = "0.1.0"
+description = "A modular pipeline for converting ROS bags into Parquet shards and Hugging Face Datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Xiangyu Fu", email = "xiangyu.fu@tum.de"}
+]
+keywords = ["robotics", "dataset", "ros", "machine-learning", "parquet", "huggingface"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Robotics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    # Core dependencies
+    "PyYAML>=5.4",
+    "pydantic>=2.0",
+    "tqdm>=4.0",
+    
+    # Data processing
+    "pandas>=1.2",
+    "pyarrow>=6.0",
+    "numpy>=1.25.2",
+    
+    # Machine learning frameworks
+    "torch>=2.2.1",
+    "torchvision>=0.20.1",
+    "datasets>=2.0",
+    "safetensors>=0.3.0",
+    
+    # Configuration management
+    "omegaconf>=2.3.0",
+    
+    # Computer vision and robotics
+    "opencv-python>=4.9.0",
+    "matplotlib>=3.7.1",
+    "scipy>=1.15.1",
+]
+
+# NOTE: ROS dependencies (rosbag, cv_bridge, tf2_ros) must be installed via RoboStack
+# These are not available on PyPI and require a conda/mamba environment:
+# 
+# Installation via RoboStack:
+#   conda create -n ros_env python=3.10
+#   conda activate ros_env
+#   conda install -c robostack-staging ros-noetic-rosbag ros-noetic-cv-bridge ros-noetic-tf2-ros
+#   pip install -e .
+
+[project.urls]
+Homepage = "https://github.com/Xiangyu-Fu/robot_dataset_pipeline_stu"
+
+[project.scripts]
+convert-dataset = "robot_dataset_pipeline.convert_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["robot_dataset_pipeline*"]
+exclude = ["tests*"]
